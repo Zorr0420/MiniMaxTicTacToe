@@ -2,6 +2,7 @@ public class Field {
     private int x;
     private int y;
     private int width;
+    private boolean occupied;
     private State state;
     public Field(int x, int y, int width){
         this.x = x;
@@ -28,8 +29,12 @@ public class Field {
             return true;
         return false;
     }
+    public State getState(){
+        return state;
+    }
     public void setState(State s){
         this.state=s;
+        this.occupied = true;
     }
 
 
