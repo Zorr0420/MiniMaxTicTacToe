@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class MiniMax {
 
-    public static int minimax(Game g, int depth, State player){
+    private static int minimax(Game g, int depth, State player){
         if(g.isOver()||depth == 0)
             return g.getEvaluation();
         else if(player == State.player1){
@@ -12,7 +12,6 @@ public class MiniMax {
                     Field[][] board = g.getFields();
                     if(board[i][j].getState() == State.empty) {
                         g.setField(i,j,player);
-                        //int check = minimax(g, depth -1, State.player2);
                         int eval = minimax(g, depth -1, State.player2);
                         g.setField(i,j,State.empty);
                         max = Math.max(max, eval);
@@ -29,7 +28,6 @@ public class MiniMax {
                     Field[][] board = g.getFields();
                     if(board[i][j].getState() == State.empty) {
                         g.setField(i,j,player);
-                        //int check = minimax(g, depth -1, State.player1);
                         int eval = minimax(g, depth -1, State.player1);
                         g.setField(i,j,State.empty);
                         min = Math.min(min, eval);
@@ -62,9 +60,12 @@ public class MiniMax {
             }
         }
         ff[finalI][finalJ].setState(State.player1);
-        if(game.isOver()) {
-            System.out.println("A.I. wins");
+        if(game.checkForWin()) {
             game.setOver(true);
+            System.out.println("A.I. wins");
+        }
+        else if(game.checkForTie()){
+            System.out.println("Tie");
         }
         game.setPlayer(State.player2);
 

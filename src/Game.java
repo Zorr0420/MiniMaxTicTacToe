@@ -21,9 +21,11 @@ public class Game {
     public void evaluate(){
         if(player == State.player1 && checkForWin()) {
             value = 1;
+            player = State.player2;
         }
         else if(player == State.player2 && checkForWin()) {
              value = -1;
+            player = State.player1;
         }
         else if(checkForTie()){
             value = 0;
@@ -88,10 +90,11 @@ public class Game {
         this.over = over;
     }
     public boolean checkForWin(){
+
         over = checkDiag()||checkVerti()||checkHori();
         return checkDiag()||checkVerti()||checkHori();
     }
-    private boolean checkForTie(){
+    public boolean checkForTie(){
         int count = 0;
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){
@@ -105,22 +108,28 @@ public class Game {
     private boolean checkHori(){
         int horizontal = 0;
         for(int i=0;i<3;i++){
-            return (fields[i][0].getState() == player &&fields[i][1].getState() == player&&fields[i][2].getState() == player);
+            if(fields[i][1].getState() == fields[i][0].getState() && fields[i][2].getState() == fields[i][0].getState()&&(fields[i][0].getState() != State.empty)){
+                player =fields[i][0].getState();
+                return true;
+            }
         }
         return false;
     }
     private boolean checkVerti(){
         int vertical = 0;
         for(int i=0;i<3;i++){
-            return (fields[0][i].getState() == player &&fields[1][i].getState() == player&&fields[2][i].getState() == player);
+            if(fields[1][i].getState() == fields[0][i].getState() && fields[2][i].getState() == fields[0][i].getState()&&(fields[0][i].getState() != State.empty)){
+                player =fields[0][i].getState();
+                return true;
+            }
         }
         return false;
     }
     private boolean checkDiag(){
-        if(fields[0][0].getState() == player&&fields[1][1].getState() == player&&fields[2][2].getState() == player)
+        if(fields[0][0].getState() == fields[1][1].getState() && fields[2][2].getState() == fields[1][1].getState()||(fields[0][2].getState() == fields[1][1].getState() && fields[2][0].getState() == fields[1][1].getState())&&(fields[1][1].getState()!=State.empty)){
+            player = fields[1][1].getState();
             return true;
-        else if(fields[0][2].getState() == player&&fields[1][1].getState() == player&&fields[2][0].getState() == player)
-            return true;
+        }
         return false;
     }
 }
